@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+
+<h1>Your Transactions</h1>
+
+<p>
+    <table class="table" id="transactions">
+      <thead>
+        <tr style="color: white; background: grey;">
+          <th scope="col">Symbol</th>
+          <th scope="col">Buy/Sell</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+          <th scope="col">Time</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for transaction in transactions %}
+            {% if transaction["quantity"] > 0 %}
+                <tr style="background: lightgreen;">
+            {% elif transaction["quantity"] < 0 %}
+                <tr style="background: lightcoral;">
+            {% else %}
+                <tr style="background: lightgrey;">
+            {% endif %}
+                  <td>{{transaction["symbol"]}}</td>
+                  {% if transaction["quantity"] > 0 %}
+                  <td>buy</td>
+                  {% elif transaction["quantity"] < 0   %}
+                  <td>sell</td>
+                  {% else %}
+                  <td> </td>
+                  {% endif %}
+                  <td>{{transaction["quantity"] |abs}}</td>
+                  <td>{{transaction["price"]}}</td>
+                  <td>{{ transaction["time"] }}</td>
+                </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+</p>
+
+
+
+<script>
+    $(document).ready( function () {
+    $('#transactions').DataTable();
+} );
+</script>
+
+
+
+
+
+{% endblock %}

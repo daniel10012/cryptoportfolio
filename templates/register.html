@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+
+  </div>
+  <div class="alert alert-warning" id="alreadytaken" style="display: none;">
+    <strong>Can't register!</strong> This username is already taken.
+  </div>
+
+    <form action="/register" method="post" id="myForm">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name ="username" id="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="retype your password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit" id="submit">Register</button>
+        <ul></ul>
+    </form>
+
+
+<script>
+
+
+
+    $("#username").blur(function(){
+        $.get("/check", {username: $("#username").val()} , function(data){
+            if (data == false){
+                $("form").submit(function(e){
+                    e.preventDefault();
+                    location.reload();
+                    $('#alreadytaken').show();
+                });
+            }
+        });
+    });
+
+
+</script>
+{% endblock %}
